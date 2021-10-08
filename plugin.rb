@@ -19,8 +19,8 @@ enabled_site_setting :algolia_enabled
 register_asset 'stylesheets/variables.scss'
 register_asset 'stylesheets/discourse-algolia-layout.scss'
 register_asset 'stylesheets/discourse-algolia-base.scss'
-register_asset 'lib/algoliasearch.js'
-register_asset 'lib/autocomplete.js'
+register_asset 'vendor/algoliasearch.js'
+register_asset 'vendor/autocomplete.js'
 
 after_initialize do
   require_relative 'app/jobs/scheduled/update_indexes.rb'

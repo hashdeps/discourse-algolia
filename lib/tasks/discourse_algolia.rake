@@ -22,6 +22,21 @@ task "algolia:reindex_tags" => :environment do
   algolia_reindex_tags
 end
 
+desc "updates algoliasearch and autocomplete JS bundles"
+task "algolia:javascript_update" => :environment do
+  yarn = system("cd plugins/discourse-algolia && yarn install")
+
+  FileUtils.cp(
+    "#{Rails.root}/plugins/discourse-algolia/node_modules/algoliasearch/dist/algoliasearch.umd.js",
+    "#{Rails.root}/plugins/discourse-algolia/assets/vendor/algoliasearch.js"
+  )
+
+  FileUtils.cp(
+    "#{Rails.root}/plugins/discourse-algolia/node_modules/@algolia/autocomplete-js/dist/umd/index.production.js",
+    "#{Rails.root}/plugins/discourse-algolia/assets/vendor/autocomplete.js"
+  )
+end
+
 def algolia_reindex_users
   puts "[Starting] Clearing users in Algolia"
   DiscourseAlgolia.users_index.clear_objects
