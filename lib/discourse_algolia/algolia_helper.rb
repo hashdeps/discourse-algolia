@@ -57,6 +57,10 @@ module DiscourseAlgolia
         post_records = to_post_records(post)
         add_algolia_records(POSTS_INDEX, post_records)
       end
+
+      if discourse_event == "post_destroyed"
+        delete_algolia_record(POSTS_INDEX, "#{post.topic.slug}/#{post.topic.id}/#{post.post_number}")
+      end
     end
 
     def self.should_index_post?(post)
@@ -185,6 +189,10 @@ module DiscourseAlgolia
 
     def self.add_algolia_record(index_name, record, object_id)
       algolia_index(index_name).add_object(record, object_id)
+    end
+
+    def self.delete_algolia_record(index_name, object_id)
+      algolia_index(index_name).delete_object(object_id)
     end
 
     def self.add_algolia_records(index_name, records)
