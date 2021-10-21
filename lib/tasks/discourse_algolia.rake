@@ -8,16 +8,12 @@ end
 
 desc "configure algolia index settings"
 task "algolia:configure" => :environment do
-  algolia_configure_users
   algolia_configure_posts
-  algolia_configure_tags
 end
 
 desc "reindex everything to algolia"
 task "algolia:reindex" => :environment do
-  algolia_reindex_users
   algolia_reindex_posts
-  algolia_reindex_tags
 end
 
 desc "reindex users in algolia"
@@ -51,24 +47,7 @@ end
 def algolia_configure_posts
   puts "[Starting] Pushing posts index settings to Algolia"
   DiscourseAlgolia::AlgoliaHelper.algolia_index(
-    DiscourseAlgolia::AlgoliaHelper::POSTS_INDEX).set_settings(
-      "ranking" => ["typo", "geo", "words", "filters", "proximity", "attribute", "custom"],
-      "searchableAttributes" => ["unordered(topic.title)", "unordered(topic.tags)", "unordered(content)"],
-      "attributesToHighlight" => ["topic.title", "topic.tags", "content"],
-      "attributesToSnippet" => ["content:30"],
-      "attributesForFaceting" => ["category.name", "topic.tags", "user.username"],
-      "attributesToRetrieve" => [
-        "post_number", "content", "url", "image_url",
-        "topic.title", "topic.tags", "topic.slug", "topic.url", "topic.views",
-        "user.username", "user.name", "user.avatar_template", "user.url",
-        "category.name", "category.color", "category.slug", "category.url"],
-      "customRanking" => [
-        "desc(is_wordy)", "desc(topic.views)", "asc(post_number)", "asc(part_number)"],
-      "attributeForDistinct" => "topic.id",
-      "distinct" => 1,
-      "advancedSyntax" => true,
-      "removeWordsIfNoResults" => "allOptional"
-    )
+    DiscourseAlgolia::AlgoliaHelper::POSTS_INDEX)
   puts "[Finished] Successfully configured posts index in Algolia"
 end
 

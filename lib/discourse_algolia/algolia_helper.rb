@@ -6,7 +6,7 @@ module DiscourseAlgolia
   class AlgoliaHelper
 
     USERS_INDEX = "discourse-users".freeze
-    POSTS_INDEX = "discourse-posts".freeze
+    POSTS_INDEX = "hash_learn_test".freeze
     TAGS_INDEX = "discourse-tags".freeze
 
     # rank fragments with just a few words lower than others
