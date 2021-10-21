@@ -102,7 +102,7 @@ module DiscourseAlgolia
         end
 
         record = {
-          objectID: "#{post.id}-#{index}",
+          objectID: "#{post.topic.slug}/#{post.topic.id}/#{post.post_number}",
           url: "/t/#{post.topic.slug}/#{post.topic.id}/#{post.post_number}",
           post_id: post.id,
           part_number: index,
@@ -114,7 +114,9 @@ module DiscourseAlgolia
           image_url: post.image_url,
           word_count: words.length,
           is_wordy: words.length >= WORDINESS_THRESHOLD,
-          content: content[0..8000]
+          content: content[0..8000],
+          type: "discourse",
+          title: ""
         }
 
         user = post.user
@@ -129,6 +131,7 @@ module DiscourseAlgolia
         topic = post.topic
         if (topic)
           clean_title = topic.title.gsub(/[^\u1F600-\u1F6FF\s]/i, '')
+          record[:title] = clean_title
           record[:topic] = {
             id: topic.id,
             url: "/t/#{topic.slug}/#{topic.id}",
